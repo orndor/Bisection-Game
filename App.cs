@@ -9,6 +9,8 @@ namespace Bisection_Game
         public void Run()
         {
             Bisection.OneThruTen();
+            Bisection.OneThruThousand();
+            Bisection.OneThruHundred();
         }
     }
 }

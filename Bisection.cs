@@ -30,13 +30,113 @@ namespace Bisection_Game
         }
         static public void OneThruThousand()
         {
+            int[] numList = new int[1000];
+            var matchFound = false;
 
+            for (int i = 0; i < numList.Length; i++)
+            {
+                numList[i] = i + 1;
+            }
+            Random random = new Random();
+            int randomNumber = random.Next(1001);
+            var listMiddleValue = (numList[0] + numList[numList.Length - 1]) / 2;
+
+            do
+            {
+                try
+                {
+                    Console.Write($"The computer's number is between {numList[0]} and {numList[numList.Length - 1]}; enter a guess: ");
+                    var userInput = int.Parse(Console.ReadLine());
+                    if (userInput == randomNumber)
+                    {
+                        Console.WriteLine("You found a match!");
+                        matchFound = true;
+                    }
+                    else if (userInput > randomNumber && userInput <= numList[numList.Length - 1] && userInput >= numList[0])
+                    {
+                        Console.WriteLine("Your guess was too high.");
+
+                        numList = GuessTooHigh(numList);
+
+                    }
+                    else if (userInput < randomNumber && userInput <= numList[numList.Length - 1] && userInput >= numList[0])
+                    {
+                        Console.WriteLine("Your guess was too low.");
+
+                        numList = GuessTooLow(numList, listMiddleValue);
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("You guess isn't in the appropriate range.");
+                    }
+                    listMiddleValue = (numList[0] + numList[numList.Length - 1]) / 2;
+                }
+                catch
+                {
+                    Console.WriteLine("Please enter a valid option.");
+                }
+
+            } while (matchFound == false);
         }
         static public void OneThruHundred()
         {
-            //Random random = new Random();
-            //int randomNumber = random.Next(10);
+            int[] numList = new int[100];
+
+            for (int i = 0; i < numList.Length; i++)
+            {
+                numList[i] = i + 1;
+            }
+
+            var listMiddleValue = (numList[0] + numList[numList.Length - 1]) / 2;
+            var matchFound = false;
+            var userInput = 0;
+            var menuOption = 0;
+            do
+            {
+                try
+                {
+                    Console.Write("Please select a number from 1 to 100: ");
+                    userInput = int.Parse(Console.ReadLine());
+                }
+                catch
+                {
+                    Console.WriteLine("Not a valid number.  Please try again");
+                }
+            } while (userInput < 1 || userInput > 100);
+            do
+            {
+                try
+                {
+                    do
+                    {
+                        Console.WriteLine($"\nThe computer guesses {listMiddleValue}");
+                        if (userInput == listMiddleValue)
+                        {
+                            Console.WriteLine($"The computer found the number: {userInput}");
+                            matchFound = true;
+                            break;
+                        }
+                        else if (userInput > listMiddleValue)
+                        {
+                            numList = GuessTooLow(numList, listMiddleValue);
+                        }
+                        else if (userInput < listMiddleValue)
+                        {
+                            numList = GuessTooHigh(numList);
+                        }
+                        listMiddleValue = (numList[0] + numList[numList.Length - 1]) / 2;
+                        Console.Write("Please input 1 for too high or 2 for too low: ");
+                        menuOption = int.Parse(Console.ReadLine());
+                    } while (matchFound == false);
+                }
+                catch
+                {
+                    Console.WriteLine("Not a valid number.  Please try again");
+                }
+            } while (menuOption < 1 || menuOption > 2);
         }
+
         private static void BisectionSearch(int userinput, int[] numList)
         {
 
@@ -55,36 +155,46 @@ namespace Bisection_Game
                 else if (userinput < listMiddleValue)
                 {
                     Console.WriteLine($"The value ({userinput}) is lower than {listMiddleValue}");
-                    var startNum = numList[0];
-                    int[] newList = new int[numList.Length / 2];
-                    for (int i = 0; i < newList.Length; i++)
-                    {
-                        newList[i] = startNum;
-                        startNum += 1;
-                    }
-                    numList = newList;
-
-                    PrintListAsString(numList);
+                    numList = GuessTooHigh(numList);
                 }
                 else if (userinput > listMiddleValue)
                 {
                     Console.WriteLine($"The value ({userinput}) is higher than {listMiddleValue}");
-
-                    var startNum = listMiddleValue + 1;
-                    int[] newList = new int[numList.Length / 2];
-                    for (int i = 0; i < newList.Length; i++)
-                    {
-                        newList[i] = startNum;
-                        startNum += 1;
-                    }
-                    numList = newList;
-
-                    PrintListAsString(numList);
+                    numList = GuessTooLow(numList, listMiddleValue);
                 }
                 listMiddleValue = (numList[0] + numList[numList.Length - 1]) / 2;
 
             } while (matchFound == false);
 
+        }
+        private static int[] GuessTooLow(int[] numList, int listMiddleValue)
+        {
+            var startNum = listMiddleValue + 1;
+            int[] newList = new int[numList.Length / 2];
+            for (int i = 0; i < newList.Length; i++)
+            {
+                newList[i] = startNum;
+                startNum += 1;
+            }
+            numList = newList;
+
+            PrintListAsString(numList);
+            return numList;
+        }
+
+        private static int[] GuessTooHigh(int[] numList)
+        {
+            var startNum = numList[0];
+            int[] newList = new int[numList.Length / 2];
+            for (int i = 0; i < newList.Length; i++)
+            {
+                newList[i] = startNum;
+                startNum += 1;
+            }
+            numList = newList;
+
+            PrintListAsString(numList);
+            return numList;
         }
 
         private static void PrintListAsString(int[] numList)
