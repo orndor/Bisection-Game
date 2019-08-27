@@ -17,8 +17,8 @@ namespace Bisection_Game
             {
                 try
                 {
-                        Console.Write("Please select a number from 1 to 10: ");
-                        userInput = int.Parse(Console.ReadLine());
+                    Console.Write("Please select a number from 1 to 10: ");
+                    userInput = int.Parse(Console.ReadLine());
                 }
                 catch
                 {
@@ -40,35 +40,35 @@ namespace Bisection_Game
             Random random = new Random();
             int randomNumber = random.Next(1001);
             var listMiddleValue = (numList[0] + numList[numList.Length - 1]) / 2;
-
+            Console.Write($"The computer's picked a number between 1 - 1000.");
             do
             {
                 try
                 {
-                    Console.Write($"The computer's number is between {numList[0]} and {numList[numList.Length - 1]}; enter a guess: ");
+                    Console.Write($"Enter a guess: ");
                     var userInput = int.Parse(Console.ReadLine());
                     if (userInput == randomNumber)
                     {
-                        Console.WriteLine("You found a match!");
+                        Console.WriteLine("You guessed the number!");
                         matchFound = true;
                     }
-                    else if (userInput > randomNumber && userInput <= numList[numList.Length - 1] && userInput >= numList[0])
+                    else if (userInput > randomNumber && userInput >= 0 && userInput < 1000 /*<= numList[numList.Length - 1] && userInput >= numList[0]*/)
                     {
                         Console.WriteLine("Your guess was too high.");
-
                         numList = GuessTooHigh(numList);
 
+
                     }
-                    else if (userInput < randomNumber && userInput <= numList[numList.Length - 1] && userInput >= numList[0])
+                    else if (userInput < randomNumber && userInput >= 0 && userInput < 1000 /*numList[numList.Length - 1] && userInput >= numList[0]*/)
                     {
                         Console.WriteLine("Your guess was too low.");
-
                         numList = GuessTooLow(numList, listMiddleValue);
+
 
                     }
                     else
                     {
-                        Console.WriteLine("You guess isn't in the appropriate range.");
+                        Console.WriteLine("Your guess isn't in the appropriate range.");
                     }
                     listMiddleValue = (numList[0] + numList[numList.Length - 1]) / 2;
                 }
@@ -120,10 +120,12 @@ namespace Bisection_Game
                         else if (userInput > listMiddleValue)
                         {
                             numList = GuessTooLow(numList, listMiddleValue);
+                            PrintListAsString(numList);
                         }
                         else if (userInput < listMiddleValue)
                         {
                             numList = GuessTooHigh(numList);
+                            PrintListAsString(numList);
                         }
                         listMiddleValue = (numList[0] + numList[numList.Length - 1]) / 2;
                         Console.Write("Please input 1 for too high or 2 for too low: ");
@@ -178,7 +180,6 @@ namespace Bisection_Game
             }
             numList = newList;
 
-            PrintListAsString(numList);
             return numList;
         }
 
@@ -193,7 +194,6 @@ namespace Bisection_Game
             }
             numList = newList;
 
-            PrintListAsString(numList);
             return numList;
         }
 
