@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Bisection_Game
+﻿namespace Bisection_Game
 {
     class Program
     {

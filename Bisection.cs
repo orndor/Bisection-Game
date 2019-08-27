@@ -52,19 +52,15 @@ namespace Bisection_Game
                         Console.WriteLine("You guessed the number!");
                         matchFound = true;
                     }
-                    else if (userInput > randomNumber && userInput >= 0 && userInput < 1000 /*<= numList[numList.Length - 1] && userInput >= numList[0]*/)
+                    else if (userInput > randomNumber && userInput >= 0 && userInput < 1000)
                     {
                         Console.WriteLine("Your guess was too high.");
                         numList = GuessTooHigh(numList);
-
-
                     }
-                    else if (userInput < randomNumber && userInput >= 0 && userInput < 1000 /*numList[numList.Length - 1] && userInput >= numList[0]*/)
+                    else if (userInput < randomNumber && userInput >= 0 && userInput < 1000)
                     {
                         Console.WriteLine("Your guess was too low.");
                         numList = GuessTooLow(numList, listMiddleValue);
-
-
                     }
                     else
                     {
